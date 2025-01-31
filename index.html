@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootstrap App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Header Data</h1>
+    <table class="table table-striped" id="headerTable">
+      <thead>
+        <tr>
+          <th>BUKRS</th>
+          <th>ZREQ NO</th>
+          <th>BUTXT</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamic rows will be inserted here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Load headers when the page is loaded
+    window.onload = async function() {
+      const response = await fetch('/api/headers');
+      const headers = await response.json();
+
+      const headerTable = document.getElementById('headerTable').getElementsByTagName('tbody')[0];
+      headerTable.innerHTML = ''; // Clear existing data
+
+      if (headers.length === 0) {
+        headerTable.innerHTML = '<tr><td colspan="4" class="text-center">No headers found</td></tr>';
+        return;
+      }
+
+      headers.forEach(header => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${header.bukrs || 'N/A'}</td>
+          <td>${header.zreq_no || 'N/A'}</td>
+          <td>${header.butxt || 'N/A'}</td>
+          <td><button class="btn btn-primary btn-sm view-items" data-id="${header.bukrs}">View Items</button></td>
+        `;
+        headerTable.appendChild(row);
+      });
+
+      // Add event listeners for "View Items" buttons
+      document.querySelectorAll('.view-items').forEach(button => {
+        button.addEventListener('click', async function () {
+          const headerId = this.getAttribute('data-id');
+          const response = await fetch(`/api/items?headerId=${headerId}`);
+          const items = await response.json();
+
+          const itemRow = document.createElement('tr');
+          itemRow.classList.add('item-row');
+          itemRow.innerHTML = `
+            <td colspan="4">
+              <ul class="list-group">
+                ${items.map(item => `<li class="list-group-item">${item.bukrs || 'N/A'}</li>`).join('')}
+              </ul>
+            </td>
+          `;
+          this.closest('tr').insertAdjacentElement('afterend', itemRow);
+        });
+      });
+    };
+  </script>
+</body>
+</html>
