@@ -1,61 +1,24 @@
-# Node.js dependencies
+
+# Node modules
 node_modules/
+
+# Environment variables
+.env
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Logs
-logs/
-*.log
-*.log.*
-
-# Environment files
-.env
-.env.local
-.env.*.local
-
-# OS-specific files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Editor-specific files
+# Editor files
 .vscode/
 .idea/
 *.swp
 
-# Build directories
+# Build artifacts
 dist/
-build/
-
-# Temporary files
-tmp/
-temp/
-
-# Test coverage
-coverage/
-
-# Debug files
-*.pid
-*.seed
-*.pid.lock
-
-# Optional npm cache directory
-.npm/
-
-# Optional eslint cache
-.eslintcache
-
-# Optional prettier cache
-.prettiercache
-
-# Ignore any local database files
-*.sqlite
-*.sqlite3
-
-# Ignore generated files
-*.tgz
-*.zip
-*.bak
-
-# Ignore generated documentation
-# docs/
+```
